@@ -29,7 +29,9 @@ Sequence of exercises to illustrate the loading and execution of scripts in the 
 ** Notice how a `GET` to `/` returns the content of `index.html` in the response message body.
 ** Rename the HTML file to `index2.html` and see the result in the browser.
 *** Notice how the `index.html` has a special meaning to the *server*. What is this "special meaning"?
+*** A: this special meaning indicates the root of all HTML pages; that is, it is the HTML file that represents the frontpage of the server
 *** Does it have a special meaning to the browser?
+*** A: since the browser just renders the HTML file's contents, its file name has no meaning to it; therefore, the name "index.html" bears no special meaning to the browser
 ** Rename the HTML file back to `index.html`.
 * Change the address to `http://localhost:3000/index.html` and observe the result.
 * Create a file `s1.js` with
@@ -43,8 +45,11 @@ console.log(something)
 * Add `<script src="s1.js"></script>` to the HTML file `head` element.
 ** Observe the result in the console.
 ** What is `document`?
-** What does `document.getElementById("main-heading")` do?
+** A: "document" represents the structure of the HTML file, and it acts as a gateway to the DOM for the JavaScript environment
+** What does `document.getElementById("main-heading")` do?~
+** A: it fetches the HTML element whose ID is equal to "main-heading"; since IDs are unique to an HTML element, it always retrieves just zero or one element
 ** Why is `console.log(mainHeading)` presenting  `null`?
+** A: since s1.js does not have access to the DOM structure, it cannot perform element fetching to it; therefore, the predefined value in this case is "null"
 * Create a file `s2.js` with
 ----
 console.log("I'm s2")
@@ -54,9 +59,12 @@ console.log(something)
 * Add `<script src="s2.js"></script>` to the HTML file `head` element.
 ** Observe the result of reloading the HTML document.
 ** Why is there an error in the console?
+** A: since there is a defined variable called "something" in s1.js, redefining said variable in s2.js causes an error inside the JavaScript enviroment; therefore, the error is thrown and logged in the console
 * Add the attribute `type="module"` to the `script` element for `s1.js`.
 ** What is the value presented for `console.log(mainHeading)`?
+** A: the logged value of mainHeading presents the header with ID "main-heading" and content "Hello World"
 ** Does the previous error still exists? Why?
+** A: since s1.js is a module of the DOM structure, it has access to it; therefore, the error no longer occurs
 
 == Javascript modules
 
@@ -78,10 +86,15 @@ console.log(add(1,2))
 ----
 ** Make sure that the loading of `s1.js` has the `"module"` type and the loading of `s2.js` does not.
 ** What is the error occurring during the document loading and why does it happen?
+** A: the error refers a syntax exception provoked by the used of "import", and it occurs because s2.js is not a module
 ** Add the `"module"` type to the loading of `s2.js`.
 ** Observe the output in the console.
 *** Is the error still occurring?
+*** A: no, because of the module type setting defined in the s2.js DOM import
 *** Is the result of the call to `add` being shown correctly?
+*** A: yes
 *** How many times is `Look, I'm running in a browser` presented?
+*** A: the mentioned text is logged only once
 ** Observe all HTTP requests made by the browser?
 *** How many HTTP requests would there be if the application used `N` modules?
+*** A: there would be as many HTTP requests as the amount of modules used by the application
